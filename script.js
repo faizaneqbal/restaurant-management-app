@@ -9,8 +9,13 @@ function addOrder() {
 
     li.innerHTML = `
         <span><strong>${dish}</strong> - ₹${price}</span>
-        <button class="btn btn-sm btn-danger">Delete</button>
+        <button class="btn btn-sm btn-danger delete-btn">Delete</button>
     `;
+
+    // Added delete functionality
+    li.querySelector(".delete-btn").addEventListener("click", function () {
+        li.remove();
+    });
 
     document.getElementById(table).appendChild(li);
 }
