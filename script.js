@@ -1,21 +1,47 @@
+const API_URL = "https://crudcrud.com/api/07b1ad6d5bec413aafbc2cd246f2155e/orders";
+
 function addOrder() {
 
     const price = document.getElementById("price").value;
     const dish = document.getElementById("dish").value;
     const table = document.getElementById("table").value;
 
+    const order = {
+        price,
+        dish,
+        table
+    };
+
+    axios.post(API_URL, order)
+        .then(response => {
+            showOrderOnScreen(response.data);
+        })
+        .catch(error => console.log(error));
+
+}
+
+function showOrderOnScreen(order) {
+
     const li = document.createElement("li");
     li.className = "list-group-item d-flex justify-content-between align-items-center";
 
     li.innerHTML = `
-        <span><strong>${dish}</strong> - ₹${price}</span>
-        <button class="btn btn-sm btn-danger delete-btn">Delete</button>
+        <span><strong>${order.dish}</strong> - ₹${order.price}</span>
+        <button class="btn btn-sm btn-danger">Delete</button>
     `;
 
-    // Added delete functionality
-    li.querySelector(".delete-btn").addEventListener("click", function () {
-        li.remove();
-    });
-
-    document.getElementById(table).appendChild(li);
+    document.getElementById(order.table).appendChild(li);
 }
+
+function loadOrders() {
+
+    axios.get(API_URL)
+        .then(response => {
+            response.data.forEach(order => {
+                showOrderOnScreen(order);
+            });
+        })
+        .catch(error => console.log(error));
+}
+
+window.addEventListener("DOMContentLoaded", loadOrders);
