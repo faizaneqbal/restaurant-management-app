@@ -45,6 +45,11 @@ function showOrderOnScreen(order) {
 
 function loadOrders() {
 
+    // 🔥 Clear all tables first
+    document.getElementById("table1").innerHTML = "";
+    document.getElementById("table2").innerHTML = "";
+    document.getElementById("table3").innerHTML = "";
+
     axios.get(API_URL)
         .then(response => {
             response.data.forEach(order => {
