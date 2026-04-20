@@ -46,11 +46,13 @@ function showOrderOnScreen(order) {
         axios.delete(`${API_URL}/${order._id}`)
             .then(() => {
                 li.remove();
+                updateTotal(order.table);
             })
             .catch(err => console.log(err));
     });
 
     document.getElementById(order.table).appendChild(li);
+    updateTotal(order.table);
 }
 
 function loadOrders() {
@@ -69,4 +71,17 @@ function loadOrders() {
         .catch(error => console.log(error));
 }
 
+function updateTotal(table) {
+
+    const items = document.getElementById(table).children;
+    let total = 0;
+
+    for (let item of items) {
+        const text = item.querySelector("span").innerText;
+        const price = parseInt(text.split("₹")[1]);
+        total += price;
+    }
+
+    document.getElementById(`total-${table}`).innerText = total;
+}
 window.addEventListener("DOMContentLoaded", loadOrders);
