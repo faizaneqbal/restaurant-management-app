@@ -30,6 +30,16 @@ function showOrderOnScreen(order) {
         <button class="btn btn-sm btn-danger">Delete</button>
     `;
 
+    // 🔥 Delete from backend + UI
+    li.querySelector("button").addEventListener("click", function () {
+
+        axios.delete(`${API_URL}/${order._id}`)
+            .then(() => {
+                li.remove();
+            })
+            .catch(err => console.log(err));
+    });
+
     document.getElementById(order.table).appendChild(li);
 }
 
