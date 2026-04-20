@@ -2,22 +2,32 @@ const API_URL = "https://crudcrud.com/api/07b1ad6d5bec413aafbc2cd246f2155e/order
 
 function addOrder() {
 
-    const price = document.getElementById("price").value;
-    const dish = document.getElementById("dish").value;
+    const price = document.getElementById("price").value.trim();
+    const dish = document.getElementById("dish").value.trim();
     const table = document.getElementById("table").value;
 
-    const order = {
-        price,
-        dish,
-        table
-    };
+    // 🔥 Validation
+    if (price === "" || dish === "") {
+        alert("Please enter both dish and price");
+        return;
+    }
+
+    if (price <= 0) {
+        alert("Price must be greater than 0");
+        return;
+    }
+
+    const order = { price, dish, table };
 
     axios.post(API_URL, order)
         .then(response => {
             showOrderOnScreen(response.data);
+
+            // Clear inputs after success
+            document.getElementById("price").value = "";
+            document.getElementById("dish").value = "";
         })
         .catch(error => console.log(error));
-
 }
 
 function showOrderOnScreen(order) {
